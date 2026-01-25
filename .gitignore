@@ -1,0 +1,22 @@
+# --- Terragrunt & Terraform ---
+.terragrunt-cache/
+*.tfstate
+*.tfstate.*
+.terraform/
+backend.tf
+provider.tf
+.terraform.lock.hcl
+
+# --- Pre-commit & Linters ---
+.pre-commit-bin/
+.pre-commit-cache/
+.tflint.d/
+
+# --- Herramientas de Seguridad (Trivy) ---
+.trivy/
+trivy-results.json
+
+# --- Sistema y VS Code ---
+.vscode/
+.DS_Store
+*.log

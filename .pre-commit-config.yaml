@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.86.0 # La versión más estable de la suite de Babenko
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint
+        args:
+          - '--args=--config=__GIT_WORKING_DIR__/.tflint.hcl'
+      - id: terraform_trivy
+        args:
+          - '--args=--severity HIGH,CRITICAL' # Solo nos avisa de lo grave
+      - id: terragrunt_validate
