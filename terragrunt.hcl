@@ -1,10 +1,15 @@
 locals {
-  # 1. Cargamos el env.hcl con un fallback para que no sea null
-  env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl", "empty.hcl"), { locals = {} })
+  # Carga de variables con fallback
+  account_vars = read_terragrunt_config(find_in_parent_folders("account.hcl", "empty.hcl"), { locals = {} })
+  tenancy_vars = read_terragrunt_config(find_in_parent_folders("tenancy.hcl", "empty.hcl"), { locals = {} })
+  env_vars     = read_terragrunt_config(find_in_parent_folders("env.hcl", "empty.hcl"), { locals = {} })
 
-  # 2. Extraemos valores con try() para evitar el error de "null value"
-  env    = try(local.env_vars.locals.env, "root")
+  # Extracción de valores
+  env    = try(local.env_vars.locals.environment, "root")
   region = try(local.env_vars.locals.aws_region, "us-east-1")
+  
+  # Identificar en qué nube estamos basado en la ruta de la carpeta
+  cloud  = contains(split("/", get_terragrunt_dir()), "aws") ? "aws" : "oci"
 }
 
 remote_state {
@@ -15,30 +20,38 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    # 3. Usamos una variable de entorno o un dummy si no hay AWS configurado
-    # Esto evita que falle el check si no has hecho aws configure
-    bucket         = "platform-lab-state-${get_env("AWS_ACCOUNT_ID", "local-dev")}"
+    # Centralizamos el estado en AWS incluso para OCI
+    bucket         = "platform-lab-state-${get_aws_account_id()}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = local.region
+    region         = "us-east-1"
     encrypt        = true
     dynamodb_table = "terraform-lock"
   }
 }
 
+# Generar el proveedor dinámicamente
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
+  contents  = local.cloud == "aws" ? <<EOF
 provider "aws" {
   region = "${local.region}"
   default_tags {
     tags = {
       Project     = "InfraPlatformLab"
       Environment = "${local.env}"
-      Owner       = "Rivce06"
       ManagedBy   = "Terragrunt"
     }
   }
+}
+EOF
+: <<EOF
+provider "oci" {
+  tenancy_ocid = "${local.tenancy_vars.locals.tenancy_ocid}"
+  user_ocid    = "${local.tenancy_vars.locals.user_ocid}"
+  fingerprint  = "${local.tenancy_vars.locals.fingerprint}"
+  private_key  = "${local.tenancy_vars.locals.private_key}"
+  region       = "${local.env_vars.locals.oci_region}"
 }
 EOF
 }

@@ -21,8 +21,9 @@ trivy-results.json
 .DS_Store
 *.log
 
+# --- Infracost ---
 .infracost/
-.infracost
-.infracost-cache
-.infracost_modules
-pricing.gob
+.infracost*
+infracost-usage.yml
+infracost.json
+.infracost-cache/
