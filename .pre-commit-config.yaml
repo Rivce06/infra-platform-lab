@@ -18,3 +18,6 @@ repos:
         args:
           - '--args=--severity HIGH,CRITICAL' # Solo nos avisa de lo grave
       - id: terragrunt_validate
+        name: Terragrunt Validate
+        entry: bash -c 'cd dev/vpc && /usr/local/bin/terragrunt validate'
+        pass_filenames: false
