@@ -20,3 +20,9 @@ trivy-results.json
 .vscode/
 .DS_Store
 *.log
+
+.infracost/
+.infracost
+.infracost-cache
+.infracost_modules
+pricing.gob
