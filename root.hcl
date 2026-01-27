@@ -23,14 +23,11 @@ locals {
     }
   EOF
 
-  oci_provider = <<-EOF
-  provider "oci" {
-   auth                = "${local.oci_auth_method == "instance_principal" ? "InstancePrincipal" : "SecurityToken"}"
-   config_file_profile = "${local.oci_auth_method == "instance_principal" ? "" : "DEFAULT"}"
-   tenancy_ocid        = "${local.tenancy_vars.locals.tenancy_ocid}"
-   region              = "${local.tenancy_vars.locals.region}"
-}
-EOF
+  oci_provider = <<-EOT
+    provider "oci" {
+      region = "${local.region}"
+    }
+  EOT
 }
 
 remote_state {
