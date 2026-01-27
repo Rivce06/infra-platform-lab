@@ -18,6 +18,7 @@ inputs = {
   create_internet_gateway = true
   lockdown_default_seclist = false
 
+  create_subnets = true
   public_subnets = {
     public = {
       cidr_block = "10.0.1.0/24"
