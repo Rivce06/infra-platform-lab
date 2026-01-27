@@ -25,8 +25,8 @@ inputs = {
     source_id = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha" 
   }
 
-  subnet_id = dependency.vcn.outputs.subnet_id # Cambiado según el output estándar del módulo
-  assign_public_ip = true # El runner necesita salir a internet para descargar git/terraform
+  subnet_id = dependency.vcn.outputs.public_subnet_ids[0]
+  assign_public_ip = true 
 
   metadata = {
     user_data = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
