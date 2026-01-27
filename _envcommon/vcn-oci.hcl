@@ -19,6 +19,7 @@ inputs = {
   lockdown_default_seclist = false
 
   create_subnets = true
+  subnets_enabled = true
   public_subnets = {
     public = {
       cidr_block = "10.0.1.0/24"
