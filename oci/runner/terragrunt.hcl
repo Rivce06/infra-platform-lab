@@ -12,7 +12,7 @@ terraform {
 
 inputs = {
   compartment_id = local.env_vars.locals.compartment_ocid
-  availability_domain = "kIdk:US-ASHBURN-AD-1"
+  availability_domain = "grlD:US-ASHBURN-AD-1"
   
   shape = "VM.Standard.A1.Flex"
   shape_config = {
@@ -34,5 +34,5 @@ inputs = {
 }
 
 dependency "vcn" {
-  config_path = "../dev/vcn"
+  config_path = "../vcn"
 }
