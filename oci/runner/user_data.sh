@@ -1,5 +1,9 @@
-!/bin/bash
+#!/bin/bash
 dnf update -y
+
+# Export OCI auth method globally
+echo 'export OCI_AUTH=instance_principal' >> /etc/profile.d/oci_auth.sh
+chmod +x /etc/profile.d/oci_auth.sh
 
 # Terraform
 dnf install -y dnf-utils
