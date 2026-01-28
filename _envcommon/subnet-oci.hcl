@@ -1,5 +1,5 @@
 terraform {
-  source = "tfr:///oracle-terraform-modules/terraform-oci-tdf-subnet/oci?ref=main"
+  source = "tfr:///oracle-terraform-modules/vcn/oci//submodules/subnet?version=3.6.0"
 }
 
 locals {
