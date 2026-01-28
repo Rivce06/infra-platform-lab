@@ -20,7 +20,11 @@ inputs = {
   
   instance_display_name = "github-runner-dev" 
   
-  shape = "VM.Standard.E2.1.Micro"
+  shape = "VM.Standard.A1.Flex"
+  shape_config = {
+   ocpus         = 1
+   memory_in_gbs = 6
+}
   
   source_details = {
     source_type = "image"
