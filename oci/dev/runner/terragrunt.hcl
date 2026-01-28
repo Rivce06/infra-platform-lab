@@ -22,7 +22,8 @@ inputs = {
   shape = "VM.Standard.A1.Flex"
   shape_config = { ocpus = 1, memory_in_gbs = 6 }
 
-  source_ocid           = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha"
+  source_ocid           = "ocid1.image.oc1.iad.aaaaaaaam6as3v77asv6sqi3aywovzst466r7u27vshj5yis3y2i7y6c7kpa"
+                          
 
   subnet_ocids          = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip      = true
