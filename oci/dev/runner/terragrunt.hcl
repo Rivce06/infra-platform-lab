@@ -16,7 +16,7 @@ dependency "subnets" {
 
 inputs = {
   compartment_ocid      = local.env_vars.locals.compartment_ocid
-  availability_domain   = "grlD:US-ASHBURN-AD-3" # Mantén el AD-3, es buena opción.
+  availability_domain   = "grlD:US-ASHBURN-AD-3"
   instance_display_name = "github-runner-dev"
 
   shape        = "VM.Standard.A1.Flex"
@@ -27,8 +27,11 @@ inputs = {
   subnet_ocids     = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip = true
 
+  ssh_public_keys = file("/home/gvenegas79/.ssh/id_rsa.pub")
+  
+  ssh_authorized_keys = null 
+
   metadata = {
-    ssh_authorized_keys = file("/home/gvenegas79/.ssh/id_rsa.pub")
-    user_data           = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
+    user_data = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
   }
 }
