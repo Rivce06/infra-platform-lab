@@ -3,11 +3,9 @@ include "root" {
 }
 
 locals {
-  env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
-}
-
-home_dir     = get_env("HOME", "/home/opc")
-ssh_key_path = "${path_env("HOME")}/.ssh/id_rsa.pub"
+  env_vars     = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+  home_dir     = get_env("HOME", "/home/opc")
+  ssh_key_path = "${local.home_dir}/.ssh/id_rsa.pub"
 }
 
 terraform {
