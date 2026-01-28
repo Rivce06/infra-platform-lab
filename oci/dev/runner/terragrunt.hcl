@@ -27,7 +27,7 @@ inputs = {
   subnet_ocids          = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip      = true
 
-  ssh_public_keys = [file("~/.ssh/id_rsa_runner.pub")]
+  ssh_public_keys = file("~/.ssh/id_rsa.pub")
 
   metadata = {
     user_data = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
