@@ -28,7 +28,7 @@ inputs = {
   subnet_ocids     = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip = true
 
-  ssh_public_keys     = file("/home/gvenegas79/.ssh/id_rsa.pub")
+  ssh_public_keys     = file(local.ssh_key_path)
   ssh_authorized_keys = null 
 
   metadata = {
