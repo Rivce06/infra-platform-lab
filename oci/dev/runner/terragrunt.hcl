@@ -23,12 +23,12 @@ inputs = {
   shape_config = { ocpus = 1, memory_in_gbs = 6 }
 
   source_id    = "ocid1.image.oc1.iad.aaaaaaaa3ottpdtaqgmxosixupd6nxqzrl2hlb4x3lqjniasm7agykicdwka"
+  source_ocid  = "ocid1.image.oc1.iad.aaaaaaaa3ottpdtaqgmxosixupd6nxqzrl2hlb4x3lqjniasm7agykicdwka"
 
   subnet_ocids     = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip = true
 
-  ssh_public_keys = file("/home/gvenegas79/.ssh/id_rsa.pub")
-  
+  ssh_public_keys     = file("/home/gvenegas79/.ssh/id_rsa.pub")
   ssh_authorized_keys = null 
 
   metadata = {
