@@ -7,7 +7,7 @@ locals {
 }
 
 terraform {
-  source = "git::https://github.com/oracle-terraform-modules/terraform-oci-compute-instance.git//modules/instance?ref=v1.0.6"
+  source = "tfr:///oracle-terraform-modules/compute-instance/oci?version=2.0.2"
 }
 
 dependency "subnets" {
