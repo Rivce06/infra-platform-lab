@@ -16,7 +16,7 @@ dependency "subnets" {
 
 inputs = {
   compartment_ocid      = local.env_vars.locals.compartment_ocid
-  availability_domain   = "grlD:US-ASHBURN-AD-3"
+  availability_domain   = "grlD:US-ASHBURN-AD-2"
   instance_display_name = "github-runner-dev"
 
   shape        = "VM.Standard.A1.Flex"
