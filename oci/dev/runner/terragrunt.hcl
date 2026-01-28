@@ -6,6 +6,10 @@ locals {
   env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
 }
 
+home_dir     = get_env("HOME", "/home/opc")
+ssh_key_path = "${path_env("HOME")}/.ssh/id_rsa.pub"
+}
+
 terraform {
   source = "tfr:///oracle-terraform-modules/compute-instance/oci?version=2.4.1"
 }
