@@ -7,7 +7,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///oracle-terraform-modules/compute-instance/oci?version=2.0.2"
+  source = "tfr:///oracle-terraform-modules/compute-instance/oci?version=2.4.1"
 }
 
 dependency "subnets" {
@@ -17,13 +17,11 @@ dependency "subnets" {
 inputs = {
   compartment_id      = local.env_vars.locals.compartment_ocid
   availability_domain = "grlD:US-ASHBURN-AD-1"
-
-shape = "VM.Standard.E2.1.Micro"
-shape_config = {
-  ocpus         = 1
-  memory_in_gbs = 1
-}
-
+  
+  instance_display_name = "github-runner-dev" 
+  
+  shape = "VM.Standard.E2.1.Micro"
+  
   source_details = {
     source_type = "image"
     source_id   = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha"
@@ -33,9 +31,7 @@ shape_config = {
   assign_public_ip = true
 
   metadata = {
-    user_data = base64encode(
-      file("${get_terragrunt_dir()}/user_data.sh")
-    )
+    user_data = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
   }
 }
 
