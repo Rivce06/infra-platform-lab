@@ -18,11 +18,11 @@ inputs = {
   compartment_id      = local.env_vars.locals.compartment_ocid
   availability_domain = "grlD:US-ASHBURN-AD-1"
 
-  shape = "VM.Standard.A1.Flex"
-  shape_config = {
-    ocpus         = 1
-    memory_in_gbs = 6
-  }
+shape = "VM.Standard.E2.1.Micro"
+shape_config = {
+  ocpus         = 1
+  memory_in_gbs = 1
+}
 
   source_details = {
     source_type = "image"
