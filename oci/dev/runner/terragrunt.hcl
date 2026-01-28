@@ -15,27 +15,19 @@ dependency "subnets" {
 }
 
 inputs = {
-  compartment_id      = local.env_vars.locals.compartment_ocid
-  availability_domain = "grlD:US-ASHBURN-AD-1"
-  
-  instance_display_name = "github-runner-dev" 
-  
-  shape = "VM.Standard.A1.Flex"
-  shape_config = {
-   ocpus         = 1
-   memory_in_gbs = 6
-}
-  
-  source_details = {
-    source_type = "image"
-    source_id   = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha"
-  }
+  compartment_ocid      = local.env_vars.locals.compartment_ocid
+  availability_domain   = "grlD:US-ASHBURN-AD-1"
+  instance_display_name = "github-runner-dev"
 
-  subnet_ocids = [dependency.subnets.outputs.subnet_id["public"]]
-  assign_public_ip = true
+  shape = "VM.Standard.A1.Flex"
+  shape_config = { ocpus = 1, memory_in_gbs = 6 }
+
+  source_ocid           = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha"
+
+  subnet_ocids          = [dependency.subnets.outputs.subnet_id["public"]]
+  assign_public_ip      = true
 
   metadata = {
     user_data = base64encode(file("${get_terragrunt_dir()}/user_data.sh"))
   }
 }
-
