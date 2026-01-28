@@ -31,7 +31,7 @@ inputs = {
     source_id   = "ocid1.image.oc1.iad.aaaaaaaaajanbyeo3gxw3ygutzp5ibsb66jtianbnlbomzn737qfzwugcnha"
   }
 
-  subnet_id        = dependency.subnets.outputs.subnet_id["public"]
+  subnet_ocids = [dependency.subnets.outputs.subnet_id["public"]]
   assign_public_ip = true
 
   metadata = {
