@@ -1,5 +1,6 @@
 include "root" {
-  path = find_in_parent_folders()
+  path   = find_in_parent_folders("root.hcl")
+  expose = true
 }
 
 terraform {
@@ -9,28 +10,27 @@ terraform {
 dependency "vpc" { config_path = "../vpc" }
 dependency "sg"  { config_path = "../security-groups" }
 dependency "iam" { config_path = "../iam-roles" }
-
-# Creamos 2 instancias: una para Master y otra para Worker
-for_each = toset(["master", "worker"])
+# Esta es la dependencia que leerá el Master de OCI cuando haya capacidad
+dependency "oci_master" { 
+  config_path = "../../../oci/dev/k3s-masters" 
+  skip_outputs = true # Temporalmente true mientras OCI está Out of Capacity
+}
 
 inputs = {
-  name = "k3s-${each.key}"
+  # Sacamos los valores de los locals del root/env
+  name          = "k3s-aws-agent-${include.root.locals.env}"
+  instance_type = include.root.locals.env_vars.locals.instance_type
+  ami           = include.root.locals.env_vars.locals.ami_id
 
-  instance_type          = "t2.micro"
-  ami                    = "ami-0532be01f26a3de55" # mazon Linux 2023 (kernel-6.1)
   subnet_id              = dependency.vpc.outputs.public_subnets[0]
   vpc_security_group_ids = [dependency.sg.outputs.security_group_id]
   iam_instance_profile   = dependency.iam.outputs.iam_instance_profile_name
+  
+  associate_public_ip_address = true
 
-  user_data = <<-EOF
-              #!/bin/bash
-              fallocate -l 2G /swapfile
-              chmod 600 /swapfile
-              mkswap /swapfile
-              swapon /swapfile
-              echo '/swapfile none swap sw 0 0' >> /etc/fstab
+  user_data = file("${get_terragrunt_dir()}/user_data.sh")
 
-              # 2. Instalar K3s
-              curl -sfL https://get.k3s.io | sh -
-              EOF
+  tags = {
+    Role = "k3s-agent"
+  }
 }

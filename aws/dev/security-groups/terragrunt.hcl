@@ -1,5 +1,5 @@
 include "root" {
-  path = find_in_parent_folders()
+  path = find_in_parent_folders("root.hcl")
 }
 
 terraform {
@@ -12,23 +12,22 @@ dependency "vpc" {
 
 inputs = {
   name        = "k3s-lab-sg"
-  description = "Fuego cruzado para K3s, ArgoCD y Monitoreo"
+  description = "SG K3s & monitoring"
   vpc_id      = dependency.vpc.outputs.vpc_id
 
-  # Reglas de Entrada (Ingress)
   ingress_with_cidr_blocks = [
     {
       from_port   = 6443
       to_port     = 6443
       protocol    = "tcp"
-      description = "API de Kubernetes (Kubectl local)"
-      cidr_blocks = "0.0.0.0/0"
+      description = "Kubernetes API"
+      cidr_blocks = "10.0.0.0/16"
     },
     {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      description = "HTTP (Ingress para ArgoCD/Grafana)"
+      description = "HTTP"
       cidr_blocks = "0.0.0.0/0"
     },
     {
@@ -42,11 +41,14 @@ inputs = {
       from_port   = 9100
       to_port     = 9100
       protocol    = "tcp"
-      description = "Node Exporter (Metrics scraping)"
-      cidr_blocks = "10.0.0.0/16" # Solo interno para seguridad
+      description = "Node Exporter"
+      cidr_blocks = "10.0.0.0/16"
     }
   ]
 
-  # Salida Total (Egress) - Vital para descargar imágenes de Docker y Helm charts
   egress_rules = ["all-all"]
+
+  tags = {
+    Component = "security"
+  }
 }

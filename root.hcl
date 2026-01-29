@@ -42,12 +42,18 @@ generate "provider" {
 }
 
 remote_state {
-  backend = "local"
+  backend = "s3"
   generate = {
     path      = "backend.tf"
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    path = "terraform.tfstate"
+    bucket         = "tfstate-${local.account_vars.locals.aws_account_id}-lab"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
+    region         = local.aws_region 
+    encrypt        = true
+    dynamodb_table = "tflock-${local.account_vars.locals.aws_account_id}-lab"
+    
+    s3_bucket_query_logging_enabled = false 
   }
 }
